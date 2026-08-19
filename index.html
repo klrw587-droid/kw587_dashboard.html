@@ -1,179 +1,333 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>KW587 Live Flashboard</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
-    .dashboard { max-width: 1100px; margin: 0 auto; }
-    
-</style>  </head>
+<head>
+<meta charset="UTF-8">
+<title>KW587 Live Flashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
+.dashboard { max-width: 1100px; margin: 0 auto; }
+
+/* HEADER */
+.header { background: #2C1810; border-radius: 10px 10px 0 0; padding: 18px 28px; display: flex; justify-content: space-between; align-items: center; }
+.header-left .eyebrow { font-size: 9px; color: #7A5C3A; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 4px; }
+.header-left .title { font-size: 22px; color: #F5ECD7; font-weight: 700; letter-spacing: 0.05em; }
+.header-left .subtitle { font-size: 12px; color: #C8A87A; margin-top: 3px; }
+.header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.badge { background: #C8A87A; color: #2C1810; font-size: 10px; font-weight: 700; padding: 4px 12px; border-radius: 4px; letter-spacing: 0.1em; }
+.last-updated { font-size: 9px; color: #7A5C3A; }
+
+/* ALERT */
+.alert-bar { background: #8B1A1A; color: #F5ECD7; font-size: 9px; font-weight: 700; padding: 6px 20px; letter-spacing: 0.05em; }
+
+/* SECTION HEADERS */
+.section-header { background: #F0E8D8; border-bottom: 2px solid #C8A87A; padding: 6px 20px; }
+.section-header span { font-size: 9px; font-weight: 700; color: #5C3D1E; letter-spacing: 0.15em; text-transform: uppercase; }
+
+/* INCOME GRID */
+.income-grid { background: #FDFAF5; display: grid; grid-template-columns: repeat(4, 1fr); }
+.kpi-cell { padding: 14px 16px; border-right: 1px solid #EAE0CC; }
+.kpi-cell:last-child { border-right: none; }
+.kpi-label { font-size: 8px; color: #9A7D5A; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; margin-bottom: 5px; }
+.kpi-value { font-size: 18px; color: #2C1810; font-weight: 700; }
+.kpi-value.red { color: #8B1A1A; }
+.kpi-value.green { color: #2C6B2F; }
+.kpi-sub { font-size: 9px; color: #9A7D5A; margin-top: 3px; }
+
+/* GRAND TOTAL */
+.grand-total { background: #C8A87A; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+.grand-total .label { font-size: 10px; font-weight: 700; color: #5C3D1E; letter-spacing: 0.1em; text-transform: uppercase; }
+.grand-total .value { font-size: 24px; font-weight: 700; color: #2C1810; }
+
+/* PRODUCTION GRID */
+.prod-grid { background: #FDFAF5; display: grid; grid-template-columns: repeat(4, 1fr); }
+.prod-cell { padding: 14px 16px; border-right: 1px solid #EAE0CC; }
+.prod-cell:last-child { border-right: none; }
+.prod-sub-label { font-size: 8px; color: #9A7D5A; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-top: 6px; margin-bottom: 2px; }
+.prod-sub-value { font-size: 14px; color: #2C1810; font-weight: 700; }
+
+/* GROWTH GRID */
+.growth-grid { background: #FDFAF5; display: grid; grid-template-columns: repeat(4, 1fr); }
+
+/* CHARTS */
+.charts-row { background: #FDFAF5; display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid #EAE0CC; }
+.chart-box { padding: 16px; border-right: 1px solid #EAE0CC; }
+.chart-box:last-child { border-right: none; }
+.chart-title { font-size: 9px; color: #5C3D1E; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 12px; }
+
+/* FOOTER */
+.footer { background: #2C1810; padding: 10px 20px; border-radius: 0 0 10px 10px; display: flex; justify-content: space-between; align-items: center; }
+.footer-left { font-size: 8px; color: #7A5C3A; font-style: italic; }
+.footer-right { font-size: 8px; color: #C8A87A; }
+</style>
+</head>
 <body>
-  <div class="dashboard">
+<div class="dashboard">
 
-    <div class="header">
-      <div class="header-left">
-        <div class="eyebrow">Keller Williams Partners SW</div>
-        <div class="title">Live Flashboard</div>
-        <div class="subtitle">August 2026 &nbsp;&middot;&nbsp; Week 3 (8/15&ndash;8/21)</div>
-      </div>
-      <div class="header-right">
-        <div class="badge">MC587</div>
-        <div class="last-updated">Last updated: Aug 18, 2026 &nbsp;&middot;&nbsp; 4:55 PM</div>
-      </div>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="eyebrow">Keller Williams Partners SW</div>
+      <div class="title">Live Flashboard</div>
+      <div class="subtitle">August 2026 &nbsp;·&nbsp; Week 3 (8/15–8/21)</div>
     </div>
-
-    <div class="alert-bar">&#9888; &nbsp;P2 Alert: Co$ Offboarded YTD ($105,019) has exceeded the annual goal of $81,092</div>
-<div class="section-header"><span>Income</span></div>
-    <div class="income-grid">
-      <div class="kpi-cell">
-        <div class="kpi-label">Collected Co$</div>
-          <div class="kpi-value">$30,966.85</div>
-            <div class="kpi-sub">Income statement &middot; Current Actual</div>
-</div>
-<div class="kpi-cell">
-<div class="kpi-label">Collected BTF + OI</div>
-<div class="kpi-value">$7,000.00</div>
-<div class="kpi-sub">Income Statement &middot; Total Other Income</div>
-</div>
-<div class="kpi-cell">
-<div class="kpi-label">Projected Co$</div>
-<div class="kpi-value">$35,384.72</div>
-<div class="kpi-sub">Pending Co$ &middot; Company Dollar col</div>
-</div>
-<div class="kpi-cell">
-<div class="kpi-label">Projected BTF + OI</div>
-<div class="kpi-value">$3,300.00</div>
-<div class="kpi-sub">BTF spreadsheet &middot; MTD</div>
-</div>
+    <div class="header-right">
+      <div class="badge">MC587</div>
+      <div class="last-updated">Last updated: Aug 19, 2026 &nbsp;·&nbsp; 5:00 PM</div>
+    </div>
   </div>
-<div class="grand-total">
-<span class="label">Grand Total Projected Revenue</span>
-<span class="value">$76,651.57</span>
-</div>
-<div class="section-header"><span>Production</span></div>
-    <div class="prod-grid">
-      <div class="prod-cell">
-        <div class="kpi-label">Next Mo. Projected Income</div>
-        <div class="kpi-value" style="font-size:16px;">$4,397.76</div>
-        <div class="kpi-sub">Sept pending Co$ report</div>
-      </div>
-      <div class="prod-cell">
-        <div class="kpi-label">Listings Taken</div>
-        <div class="prod-sub-label">Units</div>
-        <div class="prod-sub-value">13</div>
-        <div class="prod-sub-label">Sales Volume</div>
-        <div class="prod-sub-value">$7,391,300</div>
-      </div>
-      <div class="prod-cell">
-        <div class="kpi-label">Contracts Written</div>
-        <div class="prod-sub-label">Units</div>
-        <div class="prod-sub-value">34</div>
-        <div class="prod-sub-label">Sales Volume</div>
-        <div class="prod-sub-value">$11,695,560</div>
-      </div>
-      <div class="prod-cell">
-        <div class="kpi-label">Closed Contracts</div>
-        <div class="prod-sub-label">Units</div>
-        <div class="prod-sub-value">30</div>
-        <div class="prod-sub-label">Sales Volume</div>
-        <div class="prod-sub-value">$8,415,750</div>
-      </div>
-    </div>
-    <div class="section-header"><span>Growth</span></div>
-    <div class="growth-grid">
-      <div class="kpi-cell">
-        <div class="kpi-label">Gross R1 / R2</div>
-        <div class="kpi-value">2 / 0</div>
-        <div class="kpi-sub">Tameshia Williams, Ryan Perez</div>
-      </div>
-      <div class="kpi-cell">
-        <div class="kpi-label">Agents Offboarded</div>
-        <div class="kpi-value">1</div>
-        <div class="kpi-sub">MTD removals</div>
-      </div>
-      <div class="kpi-cell">
-        <div class="kpi-label">Total Net</div>
-        <div class="kpi-value green">+1</div>
-      </div>
-      <div class="kpi-cell">
-        <div class="kpi-label">MC Associate Count</div>
-        <div class="kpi-value">173</div>
-        <div class="kpi-sub">As of Aug 18</div>
-      </div>
-    </div>
-    <div class="section-header"><span>2026 YTD Trends</span></div>
-    <div class="charts-row">
-      <div class="chart-box">
-        <div class="chart-title">Collected Co$ by Month ($)</div>
-        <canvas id="coChart" height="150"></canvas>
-      </div>
-      <div class="chart-box">
-        <div class="chart-title">Closed Units by Month</div>
-        <canvas id="unitsChart" height="150"></canvas>
-      </div>
-    </div>
-    <div class="section-header"><span>411 Accountability</span></div>
-    <div class="p411-grid">
-      <div class="p411-top">
-        <div class="p411-badge">Priority 1</div>
-        <div class="p411-goal">Gross <strong>103 agents</strong> with <strong>$364,120</strong> in Co$ recruited</div>
-        <div class="p411-row"><span class="p411-key">Agents Recruited YTD</span><span class="p411-val">41 of 103 &nbsp;(40%)</span></div>
-        <div class="progress-bar"><div class="progress-fill amber" style="width:40%"></div></div>
-        <div class="p411-row" style="margin-top:8px;"><span class="p411-key">Co$ Recruited YTD</span><span class="p411-val">$81,000 of $364,120 &nbsp;(22%)</span></div>
-        <div class="progress-bar"><div class="progress-fill amber" style="width:22%"></div></div>
-      </div>
-      <div class="p411-cell">
-        <div class="p411-badge">Priority 2</div>
-        <div class="p411-goal">Less than <strong>63 agents</strong> with <strong>$81,092</strong> in Co$ leave</div>
-        <div class="p411-row"><span class="p411-key">Agents Offboarded YTD</span><span class="p411-val" style="color:#8B1A1A;">45 of 63 &nbsp;(71%)</span></div>
-        <div class="progress-bar"><div class="progress-fill red" style="width:71%"></div></div>
-        <div class="p411-row" style="margin-top:8px;"><span class="p411-key">Co$ Offboarded YTD</span><span class="p411-val" style="color:#8B1A1A;">$105,019 &nbsp;&#9888; Exceeded</span></div>
-        <div class="progress-bar"><div class="progress-fill red" style="width:100%"></div></div>
-      </div>
-      <div class="p411-cell">
-        <div class="p411-badge">Priority 3</div>
-        <div class="p411-goal"><strong>Tell our story</strong> through social media via agent interviews, classes &amp; videography</div>
-        <div class="p411-row"><span class="p411-key">KW Unplugged Episodes YTD</span><span class="p411-val">8</span></div>
-        <div class="progress-bar"><div class="progress-fill green" style="width:60%"></div></div>
-      </div>
-    </div>
-    <div class="section-header"><span>Recruiting Pipeline &nbsp;&middot;&nbsp; Aug MTD</span></div>
-    <div class="pipeline-grid">
-      <div>
-        <div class="kpi-label" style="margin-bottom:10px;">Appointments</div>
-        <div class="pipeline-row"><span class="pipe-label">R1 Appts Held MTD</span><span class="pipe-val">2</span></div>
-        <div class="pipeline-row"><span class="pipe-label">R2 Appts Held MTD</span><span class="pipe-val">0</span></div>
-        <div class="pipeline-row"><span class="pipe-label">Appts Scheduled Next Week</span><span class="pipe-val">4</span></div>
-      </div>
-      <div>
-        <div class="kpi-label" style="margin-bottom:10px;">Additions &amp; Removals</div>
-        <div class="pipeline-row"><span class="pipe-label">Added This Month</span><span class="pipe-val green">+2 &nbsp;Tameshia Williams, Ryan Perez</span></div>
-        <div class="pipeline-row"><span class="pipe-label">Removed This Month</span><span class="pipe-val">1</span></div>
-        <div class="pipeline-row"><span class="pipe-label">Net Movement</span><span class="pipe-val green">+1</span></div>
-      </div>
-      <div class="footer">
-        <div class="footer-left">To ignite a high-energy real estate revolution by fostering a welcoming community for agents; where a culture of productivity creates lives worth living.</div>
-        <div class="footer-right">880 SW 145th Ave Suite 102 &nbsp;&middot;&nbsp; Pembroke Pines, FL 33027 &nbsp;&middot;&nbsp; 954.237.0400</div>
-      </div>
 
+  <div class="alert-bar">⚠ &nbsp;P2 Alert: Co$ Offboarded YTD ($105,019) has exceeded the annual goal of $81,092</div>
+
+  <!-- INCOME -->
+  <div class="section-header"><span>Income</span></div>
+  <div class="income-grid">
+    <div class="kpi-cell">
+      <div class="kpi-label">Collected Co$</div>
+      <div class="kpi-value">$30,966.85</div>
+      <div class="kpi-sub">Income statement · Current Actual</div>
     </div>
-    <script>
-      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'];
-      const coData = [26621, 24430, 25133, 66019, 55031, 37234, 59866, 30967];
-      const unitsData = [34, 52, 48, 44, 79, 54, 65, 30];
-      new Chart(document.getElementById('coChart'), {
-        type: 'bar',
-        data: { labels: months, datasets: [{ data: coData, backgroundColor: coData.map((v,i) => i===7?'#C8A87A':'#2C1810'), borderRadius: 4 }] },
-        options: { plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => '$'+(v/1000).toFixed(0)+'k', color:'#9A7D5A', font:{size:9} }, grid:{color:'#EAE0CC'} }, x: { ticks:{color:'#9A7D5A',font:{size:9}}, grid:{display:false} } } }
-      });
-      new Chart(document.getElementById('unitsChart'), {
-        type: 'line',
-        data: { labels: months, datasets: [{ data: unitsData, borderColor:'#2C1810', backgroundColor:'rgba(44,24,16,0.07)', pointBackgroundColor: unitsData.map((v,i)=>i===7?'#C8A87A':'#2C1810'), pointRadius:5, fill:true, tension:0.3 }] },
-        options: { plugins: { legend: { display: false } }, scales: { y: { ticks:{color:'#9A7D5A',font:{size:9}}, grid:{color:'#EAE0CC'} }, x: { ticks:{color:'#9A7D5A',font:{size:9}}, grid:{display:false} } } }
-      });
-    </script>
-  </body>
+    <div class="kpi-cell">
+      <div class="kpi-label">Collected BTF + OI</div>
+      <div class="kpi-value">$7,000.00</div>
+      <div class="kpi-sub">Income Statement · Total Other Income</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Projected Co$</div>
+      <div class="kpi-value">$35,384.72</div>
+      <div class="kpi-sub">Pending Co$ · Company Dollar col</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Projected BTF + OI</div>
+      <div class="kpi-value">$3,300.00</div>
+      <div class="kpi-sub">BTF spreadsheet · MTD</div>
+    </div>
+  </div>
+  <div class="grand-total">
+    <span class="label">Grand Total Projected Revenue</span>
+    <span class="value">$76,651.57</span>
+  </div>
+
+  <!-- PRODUCTION -->
+  <div class="section-header"><span>Production</span></div>
+  <div class="prod-grid">
+    <div class="prod-cell">
+      <div class="kpi-label">Next Mo. Projected Income</div>
+      <div class="kpi-value" style="font-size:16px;">$4,397.76</div>
+      <div class="kpi-sub">Sept pending Co$ report</div>
+    </div>
+    <div class="prod-cell">
+      <div class="kpi-label">Listings Taken</div>
+      <div class="prod-sub-label">Units</div>
+      <div class="prod-sub-value">13</div>
+      <div class="prod-sub-label">Sales Volume</div>
+      <div class="prod-sub-value">$7,391,300</div>
+    </div>
+    <div class="prod-cell">
+      <div class="kpi-label">Contracts Written</div>
+      <div class="prod-sub-label">Units</div>
+      <div class="prod-sub-value">34</div>
+      <div class="prod-sub-label">Sales Volume</div>
+      <div class="prod-sub-value">$11,695,560</div>
+    </div>
+    <div class="prod-cell">
+      <div class="kpi-label">Closed Contracts</div>
+      <div class="prod-sub-label">Units</div>
+      <div class="prod-sub-value">30</div>
+      <div class="prod-sub-label">Sales Volume</div>
+      <div class="prod-sub-value">$8,415,750</div>
+    </div>
+  </div>
+
+  <!-- GROWTH -->
+  <div class="section-header"><span>Growth</span></div>
+  <div class="growth-grid">
+    <div class="kpi-cell">
+      <div class="kpi-label">Gross R1 / R2</div>
+      <div class="kpi-value">2 / 0</div>
+      <div class="kpi-sub">Tameshia Williams, Ryan Perez</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Agents Offboarded</div>
+      <div class="kpi-value">1</div>
+      <div class="kpi-sub">MTD removals</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Total Net</div>
+      <div class="kpi-value green">+1</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">MC Associate Count</div>
+      <div class="kpi-value">173</div>
+      <div class="kpi-sub">As of Aug 19</div>
+    </div>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="section-header"><span>2026 YTD Trends</span></div>
+  <div class="charts-row">
+    <div class="chart-box">
+      <div class="chart-title">Collected Co$ by Month ($)</div>
+      <canvas id="coChart" height="150"></canvas>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">Closed Units by Month</div>
+      <canvas id="unitsChart" height="150"></canvas>
+    </div>
+  </div>
+
+  <!-- 411 ACCOUNTABILITY — table-based for print reliability -->
+  <div class="section-header"><span>411 Accountability</span></div>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FDFAF5;">
+    <!-- P1 full width -->
+    <tr>
+      <td colspan="2" style="padding:14px 16px;border-bottom:1px solid #EAE0CC;">
+        <span style="display:inline-block;background:#2C1810;color:#C8A87A;font-size:8px;font-weight:700;padding:2px 8px;border-radius:3px;letter-spacing:0.1em;">PRIORITY 1</span>
+        <p style="margin:5px 0 8px;font-size:11px;color:#9A7D5A;">Gross <strong style="color:#2C1810;">103 agents</strong> with <strong style="color:#2C1810;">$364,120</strong> in Co$ recruited</p>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td width="50%" style="padding-right:20px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="font-size:10px;color:#9A7D5A;">Agents Recruited YTD</td>
+                  <td align="right" style="font-size:10px;font-weight:700;color:#2C1810;">41 of 103 &nbsp;(40%)</td>
+                </tr>
+              </table>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:5px;">
+                <tr>
+                  <td bgcolor="#EAE0CC" style="background-color:#EAE0CC;height:6px;border-radius:3px;">
+                    <table width="40%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#C8A87A" style="background-color:#C8A87A;height:6px;border-radius:3px;">&nbsp;</td></tr></table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+            <td width="50%" style="padding-left:20px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="font-size:10px;color:#9A7D5A;">Co$ Recruited YTD</td>
+                  <td align="right" style="font-size:10px;font-weight:700;color:#2C1810;">$81,000 of $364,120 &nbsp;(22%)</td>
+                </tr>
+              </table>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:5px;">
+                <tr>
+                  <td bgcolor="#EAE0CC" style="background-color:#EAE0CC;height:6px;border-radius:3px;">
+                    <table width="22%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#C8A87A" style="background-color:#C8A87A;height:6px;border-radius:3px;">&nbsp;</td></tr></table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <!-- P2 and P3 side by side -->
+    <tr>
+      <td width="50%" style="padding:14px 16px;border-right:1px solid #EAE0CC;vertical-align:top;">
+        <span style="display:inline-block;background:#2C1810;color:#C8A87A;font-size:8px;font-weight:700;padding:2px 8px;border-radius:3px;letter-spacing:0.1em;">PRIORITY 2</span>
+        <p style="margin:5px 0 8px;font-size:11px;color:#9A7D5A;">Less than <strong style="color:#2C1810;">63 agents</strong> with <strong style="color:#2C1810;">$81,092</strong> in Co$ leave</p>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:5px;">
+          <tr>
+            <td style="font-size:10px;color:#9A7D5A;">Agents Offboarded YTD</td>
+            <td align="right" style="font-size:10px;font-weight:700;color:#8B1A1A;">45 of 63 &nbsp;(71%)</td>
+          </tr>
+        </table>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
+          <tr>
+            <td bgcolor="#EAE0CC" style="background-color:#EAE0CC;height:6px;border-radius:3px;">
+              <table width="71%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#8B1A1A" style="background-color:#8B1A1A;height:6px;border-radius:3px;">&nbsp;</td></tr></table>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:5px;">
+          <tr>
+            <td style="font-size:10px;color:#9A7D5A;">Co$ Offboarded YTD</td>
+            <td align="right" style="font-size:10px;font-weight:700;color:#8B1A1A;">$105,019 &nbsp;⚠ Exceeded</td>
+          </tr>
+        </table>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td bgcolor="#EAE0CC" style="background-color:#EAE0CC;height:6px;border-radius:3px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#8B1A1A" style="background-color:#8B1A1A;height:6px;border-radius:3px;">&nbsp;</td></tr></table>
+            </td>
+          </tr>
+        </table>
+      </td>
+      <td width="50%" style="padding:14px 16px;vertical-align:top;">
+        <span style="display:inline-block;background:#2C1810;color:#C8A87A;font-size:8px;font-weight:700;padding:2px 8px;border-radius:3px;letter-spacing:0.1em;">PRIORITY 3</span>
+        <p style="margin:5px 0 8px;font-size:11px;color:#9A7D5A;"><strong style="color:#2C1810;">Tell our story</strong> through social media via agent interviews, classes &amp; videography</p>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="font-size:10px;color:#9A7D5A;">KW Unplugged Episodes YTD</td>
+            <td align="right" style="font-size:10px;font-weight:700;color:#2C1810;">8</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- RECRUITING PIPELINE — table-based -->
+  <div class="section-header"><span>Recruiting Pipeline &nbsp;·&nbsp; Aug MTD</span></div>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FDFAF5;">
+    <tr>
+      <td width="50%" style="padding:14px 16px;border-right:1px solid #EAE0CC;vertical-align:top;">
+        <p style="font-size:8px;color:#9A7D5A;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;margin-bottom:10px;">Appointments</p>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr style="border-bottom:1px solid #EAE0CC;">
+            <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">R1 Appts Held MTD</td>
+            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;">2</td>
+          </tr>
+          <tr style="border-bottom:1px solid #EAE0CC;">
+            <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">R2 Appts Held MTD</td>
+            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;">0</td>
+          </tr>
+          <tr>
+            <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Appts Scheduled Next Week</td>
+            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;">4</td>
+          </tr>
+        </table>
+      </td>
+      <td width="50%" style="padding:14px 16px;vertical-align:top;">
+        <p style="font-size:8px;color:#9A7D5A;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;margin-bottom:10px;">Additions &amp; Removals</p>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr style="border-bottom:1px solid #EAE0CC;">
+            <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Added This Month</td>
+            <td align="right" style="font-size:11px;font-weight:700;color:#2C6B2F;padding:5px 0;">+2 &nbsp;Tameshia Williams, Ryan Perez</td>
+          </tr>
+          <tr style="border-bottom:1px solid #EAE0CC;">
+            <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Removed This Month</td>
+            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;">1</td>
+          </tr>
+          <tr>
+            <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Net Movement</td>
+            <td align="right" style="font-size:11px;font-weight:700;color:#2C6B2F;padding:5px 0;">+1</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">To ignite a high-energy real estate revolution by fostering a welcoming community for agents; where a culture of productivity creates lives worth living.</div>
+    <div class="footer-right">880 SW 145th Ave Suite 102 &nbsp;·&nbsp; Pembroke Pines, FL 33027 &nbsp;·&nbsp; 954.237.0400</div>
+  </div>
+
+</div>
+<script>
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'];
+const coData = [26621, 24430, 25133, 66019, 55031, 37234, 59866, 30967];
+const unitsData = [34, 52, 48, 44, 79, 54, 65, 30];
+new Chart(document.getElementById('coChart'), {
+  type: 'bar',
+  data: { labels: months, datasets: [{ data: coData, backgroundColor: coData.map((v,i) => i===7?'#C8A87A':'#2C1810'), borderRadius: 4 }] },
+  options: { plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => '$'+(v/1000).toFixed(0)+'k', color:'#9A7D5A', font:{size:9} }, grid:{color:'#EAE0CC'} }, x: { ticks:{color:'#9A7D5A',font:{size:9}}, grid:{display:false} } } }
+});
+new Chart(document.getElementById('unitsChart'), {
+  type: 'line',
+  data: { labels: months, datasets: [{ data: unitsData, borderColor:'#2C1810', backgroundColor:'rgba(44,24,16,0.07)', pointBackgroundColor: unitsData.map((v,i)=>i===7?'#C8A87A':'#2C1810'), pointRadius:5, fill:true, tension:0.3 }] },
+  options: { plugins: { legend: { display: false } }, scales: { y: { ticks:{color:'#9A7D5A',font:{size:9}}, grid:{color:'#EAE0CC'} }, x: { ticks:{color:'#9A7D5A',font:{size:9}}, grid:{display:false} } } }
+});
+</script>
+</body>
 </html>
