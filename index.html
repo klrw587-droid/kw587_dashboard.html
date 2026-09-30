@@ -267,27 +267,39 @@ body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
   </table>
 
   <!-- RECRUITING PIPELINE — table-based -->
-  <div class="section-header"><span>Recruiting Pipeline &nbsp;·&nbsp; Aug MTD</span></div>
+  <div class="section-header"><span>Recruiting Pipeline &nbsp;·&nbsp; Sep MTD</span></div>
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FDFAF5;">
     <tr>
-      <td width="50%" style="padding:14px 16px;border-right:1px solid #EAE0CC;vertical-align:top;">
-        <p style="font-size:8px;color:#9A7D5A;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;margin-bottom:10px;">Appointments</p>
+      <!-- R0 / R1 Combined -->
+      <td width="33%" style="padding:14px 16px;border-right:1px solid #EAE0CC;vertical-align:top;">
+        <p style="font-size:8px;color:#9A7D5A;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;margin-bottom:10px;">R0 / R1</p>
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr style="border-bottom:1px solid #EAE0CC;">
-            <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">R1 Appts Held MTD</td>
-            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;"><!-- BOT:R1_APPTS -->0<!-- /BOT:R1_APPTS --></td>
-          </tr>
-          <tr style="border-bottom:1px solid #EAE0CC;">
-            <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">R2 Appts Held MTD</td>
-            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;"><!-- BOT:R2_APPTS -->0<!-- /BOT:R2_APPTS --></td>
+            <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Appts Held MTD</td>
+            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;"><!-- BOT:R1_APPTS -->3<!-- /BOT:R1_APPTS --></td>
           </tr>
           <tr>
-            <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Appts Scheduled Next Week</td>
-            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;"><!-- BOT:APPTS_NEXT_WEEK -->0<!-- /BOT:APPTS_NEXT_WEEK --></td>
+            <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Gross MTD</td>
+            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;"><!-- BOT:R1_GROSS -->1<!-- /BOT:R1_GROSS --></td>
           </tr>
         </table>
       </td>
-      <td width="50%" style="padding:14px 16px;vertical-align:top;">
+      <!-- R2 -->
+      <td width="33%" style="padding:14px 16px;border-right:1px solid #EAE0CC;vertical-align:top;">
+        <p style="font-size:8px;color:#9A7D5A;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;margin-bottom:10px;">R2</p>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr style="border-bottom:1px solid #EAE0CC;">
+            <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Appts Held MTD</td>
+            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;"><!-- BOT:R2_APPTS -->0<!-- /BOT:R2_APPTS --></td>
+          </tr>
+          <tr>
+            <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Gross MTD</td>
+            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;"><!-- BOT:R2_GROSS -->0<!-- /BOT:R2_GROSS --></td>
+          </tr>
+        </table>
+      </td>
+      <!-- Additions & Removals -->
+      <td width="34%" style="padding:14px 16px;vertical-align:top;">
         <p style="font-size:8px;color:#9A7D5A;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;margin-bottom:10px;">Additions &amp; Removals</p>
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr style="border-bottom:1px solid #EAE0CC;">
@@ -300,7 +312,7 @@ body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
           </tr>
           <tr>
             <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Net Movement</td>
-            <td align="right" style="font-size:11px;font-weight:700;color:#2C6B2F;padding:5px 0;"><!-- BOT:NET_MOVEMENT -->-5<!-- /BOT:NET_MOVEMENT --></td>
+            <td align="right" style="font-size:11px;font-weight:700;color:#8B1A1A;padding:5px 0;"><!-- BOT:NET_MOVEMENT -->-5<!-- /BOT:NET_MOVEMENT --></td>
           </tr>
         </table>
       </td>
