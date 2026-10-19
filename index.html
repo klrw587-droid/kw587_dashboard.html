@@ -25,8 +25,7 @@ body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
 .section-header { background: #F0E8D8; border-bottom: 2px solid #C8A87A; padding: 6px 20px; }
 .section-header span { font-size: 9px; font-weight: 700; color: #5C3D1E; letter-spacing: 0.15em; text-transform: uppercase; }
 
-/* INCOME GRID */
-.income-grid { background: #FDFAF5; display: grid; grid-template-columns: repeat(4, 1fr); }
+/* INCOME GRID — table-based, defined inline */
 .kpi-cell { padding: 14px 16px; border-right: 1px solid #EAE0CC; }
 .kpi-cell:last-child { border-right: none; }
 .kpi-label { font-size: 8px; color: #9A7D5A; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; margin-bottom: 5px; }
@@ -74,7 +73,7 @@ body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
     </div>
     <div class="header-right">
       <div class="badge">MC587</div>
-      <div class="last-updated"><!-- BOT:LAST_UPDATED -->Last updated: Oct 16, 2026 &nbsp;·&nbsp; 5:00 PM<!-- /BOT:LAST_UPDATED --></div>
+      <div class="last-updated"><!-- BOT:LAST_UPDATED -->Last updated: Oct 16, 2026 &nbsp;·&nbsp; 4:00 PM<!-- /BOT:LAST_UPDATED --></div>
     </div>
   </div>
 
@@ -82,31 +81,42 @@ body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
 
   <!-- INCOME -->
   <div class="section-header"><span>Income</span></div>
-  <div class="income-grid">
-    <div class="kpi-cell">
-      <div class="kpi-label">Collected Co$</div>
-      <div class="kpi-value"><!-- BOT:COLLECTED_CO -->$14,609.01<!-- /BOT:COLLECTED_CO --></div>
-      <div class="kpi-sub">Income statement · Current Actual</div>
-    </div>
-    <div class="kpi-cell">
-      <div class="kpi-label">Collected BTF + OI</div>
-      <div class="kpi-value"><!-- BOT:COLLECTED_BTF -->$5,500.00<!-- /BOT:COLLECTED_BTF --></div>
-      <div class="kpi-sub">Income Statement · Total Other Income</div>
-    </div>
-    <div class="kpi-cell">
-      <div class="kpi-label">Projected Co$</div>
-      <div class="kpi-value"><!-- BOT:PROJECTED_CO -->$24,860.02<!-- /BOT:PROJECTED_CO --></div>
-      <div class="kpi-sub">Pending Co$ · Company Dollar col</div>
-    </div>
-    <div class="kpi-cell">
-      <div class="kpi-label">Projected BTF + OI</div>
-      <div class="kpi-value"><!-- BOT:PROJECTED_BTF -->$3,000.00<!-- /BOT:PROJECTED_BTF --></div>
-      <div class="kpi-sub">BTF spreadsheet · MTD</div>
-    </div>
-  </div>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FDFAF5;">
+    <!-- Row 1: Collected Co$ | Collected BTF | Collected Other OI -->
+    <tr>
+      <td width="33%" style="padding:14px 16px;border-right:1px solid #EAE0CC;border-bottom:1px solid #EAE0CC;vertical-align:top;">
+        <div class="kpi-label">Collected Co$</div>
+        <div class="kpi-value"><!-- BOT:COLLECTED_CO -->$15,546.51<!-- /BOT:COLLECTED_CO --></div>
+        <div class="kpi-sub">Income Statement · Current Actual</div>
+      </td>
+      <td width="33%" style="padding:14px 16px;border-right:1px solid #EAE0CC;border-bottom:1px solid #EAE0CC;vertical-align:top;">
+        <div class="kpi-label">Collected BTF (Admin Fees)</div>
+        <div class="kpi-value"><!-- BOT:COLLECTED_BTF -->$2,100.00<!-- /BOT:COLLECTED_BTF --></div>
+        <div class="kpi-sub">Acct 8-0040 · Current Actual</div>
+      </td>
+      <td width="34%" style="padding:14px 16px;border-bottom:1px solid #EAE0CC;vertical-align:top;">
+        <div class="kpi-label">Collected Other OI</div>
+        <div class="kpi-value"><!-- BOT:COLLECTED_OTHER_OI -->$6,715.00<!-- /BOT:COLLECTED_OTHER_OI --></div>
+        <div class="kpi-sub">Total OI minus BTF · Current Actual</div>
+      </td>
+    </tr>
+    <!-- Row 2: Projected Co$ | Projected BTF -->
+    <tr>
+      <td width="50%" style="padding:14px 16px;border-right:1px solid #EAE0CC;vertical-align:top;">
+        <div class="kpi-label">Projected Co$</div>
+        <div class="kpi-value"><!-- BOT:PROJECTED_CO -->$26,033.02<!-- /BOT:PROJECTED_CO --></div>
+        <div class="kpi-sub">Pending Co$ · Company Dollar col</div>
+      </td>
+      <td width="50%" style="padding:14px 16px;vertical-align:top;">
+        <div class="kpi-label">Projected BTF</div>
+        <div class="kpi-value"><!-- BOT:PROJECTED_BTF -->$2,700.00<!-- /BOT:PROJECTED_BTF --></div>
+        <div class="kpi-sub">BTF Spreadsheet · MTD</div>
+      </td>
+    </tr>
+  </table>
   <div class="grand-total">
     <span class="label">Grand Total Projected Revenue</span>
-    <span class="value"><!-- BOT:GRAND_TOTAL -->$47,969.03<!-- /BOT:GRAND_TOTAL --></span>
+    <span class="value"><!-- BOT:GRAND_TOTAL -->$53,094.53<!-- /BOT:GRAND_TOTAL --></span>
   </div>
 
   <!-- PRODUCTION -->
@@ -114,29 +124,29 @@ body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
   <div class="prod-grid">
     <div class="prod-cell">
       <div class="kpi-label">Next Mo. Projected Income</div>
-      <div class="kpi-value" style="font-size:16px;"><!-- BOT:NEXT_MO_PROJECTED -->$2,077.50<!-- /BOT:NEXT_MO_PROJECTED --></div>
+      <div class="kpi-value" style="font-size:16px;"><!-- BOT:NEXT_MO_PROJECTED -->$2,508.75<!-- /BOT:NEXT_MO_PROJECTED --></div>
       <div class="kpi-sub">Sept pending Co$ report</div>
     </div>
     <div class="prod-cell">
       <div class="kpi-label">Listings Taken</div>
       <div class="prod-sub-label">Units</div>
-      <div class="prod-sub-value"><!-- BOT:LISTINGS_UNITS -->20<!-- /BOT:LISTINGS_UNITS --></div>
+      <div class="prod-sub-value"><!-- BOT:LISTINGS_UNITS -->23<!-- /BOT:LISTINGS_UNITS --></div>
       <div class="prod-sub-label">Sales Volume</div>
-      <div class="prod-sub-value"><!-- BOT:LISTINGS_VOL -->$10,515,499<!-- /BOT:LISTINGS_VOL --></div>
+      <div class="prod-sub-value"><!-- BOT:LISTINGS_VOL -->$14,625,499<!-- /BOT:LISTINGS_VOL --></div>
     </div>
     <div class="prod-cell">
       <div class="kpi-label">Contracts Written</div>
       <div class="prod-sub-label">Units</div>
-      <div class="prod-sub-value"><!-- BOT:WRITTEN_UNITS -->25<!-- /BOT:WRITTEN_UNITS --></div>
+      <div class="prod-sub-value"><!-- BOT:WRITTEN_UNITS -->30<!-- /BOT:WRITTEN_UNITS --></div>
       <div class="prod-sub-label">Sales Volume</div>
-      <div class="prod-sub-value"><!-- BOT:WRITTEN_VOL -->$6,665,313<!-- /BOT:WRITTEN_VOL --></div>
+      <div class="prod-sub-value"><!-- BOT:WRITTEN_VOL -->$7,881,213<!-- /BOT:WRITTEN_VOL --></div>
     </div>
     <div class="prod-cell">
       <div class="kpi-label">Closed Contracts</div>
       <div class="prod-sub-label">Units</div>
-      <div class="prod-sub-value"><!-- BOT:CLOSED_UNITS -->21<!-- /BOT:CLOSED_UNITS --></div>
+      <div class="prod-sub-value"><!-- BOT:CLOSED_UNITS -->23<!-- /BOT:CLOSED_UNITS --></div>
       <div class="prod-sub-label">Sales Volume</div>
-      <div class="prod-sub-value"><!-- BOT:CLOSED_VOL -->$6,423,838<!-- /BOT:CLOSED_VOL --></div>
+      <div class="prod-sub-value"><!-- BOT:CLOSED_VOL -->$7,123,838<!-- /BOT:CLOSED_VOL --></div>
     </div>
   </div>
 
@@ -145,21 +155,21 @@ body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
   <div class="growth-grid">
     <div class="kpi-cell">
       <div class="kpi-label">Gross R1 / R2</div>
-      <div class="kpi-value"><!-- BOT:GROSS_R1R2 -->1 / 0<!-- /BOT:GROSS_R1R2 --></div>
-      <div class="kpi-sub"><!-- BOT:RECRUITED_NAMES -->Christian Moore Casso<!-- /BOT:RECRUITED_NAMES --></div>
+      <div class="kpi-value"><!-- BOT:GROSS_R1R2 -->3 / 0<!-- /BOT:GROSS_R1R2 --></div>
+      <div class="kpi-sub"><!-- BOT:RECRUITED_NAMES -->Christian Moore Casso, Ruby Hernandez, Gorette Goncalves<!-- /BOT:RECRUITED_NAMES --></div>
     </div>
     <div class="kpi-cell">
       <div class="kpi-label">Agents Offboarded</div>
       <div class="kpi-value"><!-- BOT:OFFBOARDED -->2<!-- /BOT:OFFBOARDED --></div>
-      <div class="kpi-sub">MTD removals</div>
+      <div class="kpi-sub"><!-- BOT:OFFBOARDED_NAMES -->Lucenda Roper, Yvesnola Joseph<!-- /BOT:OFFBOARDED_NAMES --></div>
     </div>
     <div class="kpi-cell">
       <div class="kpi-label">Total Net</div>
-      <div class="kpi-value" style="color:#2C1810;"><!-- BOT:TOTAL_NET -->-1<!-- /BOT:TOTAL_NET --></div>
+      <div class="kpi-value" style="color:#2C1810;"><!-- BOT:TOTAL_NET -->+1<!-- /BOT:TOTAL_NET --></div>
     </div>
     <div class="kpi-cell">
       <div class="kpi-label">MC Associate Count</div>
-      <div class="kpi-value"><!-- BOT:MC_COUNT -->166<!-- /BOT:MC_COUNT --></div>
+      <div class="kpi-value"><!-- BOT:MC_COUNT -->168<!-- /BOT:MC_COUNT --></div>
       <div class="kpi-sub"><!-- BOT:MC_COUNT_DATE -->As of Oct 16<!-- /BOT:MC_COUNT_DATE --></div>
     </div>
   </div>
@@ -191,13 +201,13 @@ body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td style="font-size:10px;color:#9A7D5A;">Agents Recruited YTD</td>
-                  <td align="right" style="font-size:10px;font-weight:700;color:#2C1810;"><!-- BOT:P1_AGENTS -->43 of 103 &nbsp;(42%)<!-- /BOT:P1_AGENTS --></td>
+                  <td align="right" style="font-size:10px;font-weight:700;color:#2C1810;"><!-- BOT:P1_AGENTS -->45 of 103 &nbsp;(44%)<!-- /BOT:P1_AGENTS --></td>
                 </tr>
               </table>
               <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:5px;">
                 <tr>
                   <td bgcolor="#EAE0CC" style="background-color:#EAE0CC;height:6px;border-radius:3px;">
-                    <table width="<!-- BOT:P1_AGENTS_PCT -->42%<!-- /BOT:P1_AGENTS_PCT -->" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#C8A87A" style="background-color:#C8A87A;height:6px;border-radius:3px;">&nbsp;</td></tr></table>
+                    <table width="<!-- BOT:P1_AGENTS_PCT -->44%<!-- /BOT:P1_AGENTS_PCT -->" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#C8A87A" style="background-color:#C8A87A;height:6px;border-radius:3px;">&nbsp;</td></tr></table>
                   </td>
                 </tr>
               </table>
@@ -206,13 +216,13 @@ body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td style="font-size:10px;color:#9A7D5A;">Co$ Recruited YTD</td>
-                  <td align="right" style="font-size:10px;font-weight:700;color:#2C1810;"><!-- BOT:P1_CO -->$84,000 of $364,120 &nbsp;(23%)<!-- /BOT:P1_CO --></td>
+                  <td align="right" style="font-size:10px;font-weight:700;color:#2C1810;"><!-- BOT:P1_CO -->$86,000 of $364,120 &nbsp;(24%)<!-- /BOT:P1_CO --></td>
                 </tr>
               </table>
               <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:5px;">
                 <tr>
                   <td bgcolor="#EAE0CC" style="background-color:#EAE0CC;height:6px;border-radius:3px;">
-                    <table width="<!-- BOT:P1_CO_PCT -->23%<!-- /BOT:P1_CO_PCT -->" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#C8A87A" style="background-color:#C8A87A;height:6px;border-radius:3px;">&nbsp;</td></tr></table>
+                    <table width="<!-- BOT:P1_CO_PCT -->24%<!-- /BOT:P1_CO_PCT -->" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#C8A87A" style="background-color:#C8A87A;height:6px;border-radius:3px;">&nbsp;</td></tr></table>
                   </td>
                 </tr>
               </table>
@@ -259,7 +269,7 @@ body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td style="font-size:10px;color:#9A7D5A;">KW Unplugged Episodes YTD</td>
-            <td align="right" style="font-size:10px;font-weight:700;color:#2C1810;">8</td>
+            <td align="right" style="font-size:10px;font-weight:700;color:#2C1810;">12</td>
           </tr>
         </table>
       </td>
@@ -276,11 +286,11 @@ body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr style="border-bottom:1px solid #EAE0CC;">
             <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Appts Held MTD</td>
-            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;"><!-- BOT:R1_APPTS -->3<!-- /BOT:R1_APPTS --></td>
+            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;"><!-- BOT:R1_APPTS -->7<!-- /BOT:R1_APPTS --></td>
           </tr>
           <tr>
             <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Gross MTD</td>
-            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;"><!-- BOT:R1_GROSS -->1<!-- /BOT:R1_GROSS --></td>
+            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;"><!-- BOT:R1_GROSS -->3<!-- /BOT:R1_GROSS --></td>
           </tr>
         </table>
       </td>
@@ -290,7 +300,7 @@ body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr style="border-bottom:1px solid #EAE0CC;">
             <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Appts Held MTD</td>
-            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;"><!-- BOT:R2_APPTS -->0<!-- /BOT:R2_APPTS --></td>
+            <td align="right" style="font-size:11px;font-weight:700;color:#2C1810;padding:5px 0;"><!-- BOT:R2_APPTS -->1<!-- /BOT:R2_APPTS --></td>
           </tr>
           <tr>
             <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Gross MTD</td>
@@ -304,7 +314,7 @@ body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr style="border-bottom:1px solid #EAE0CC;">
             <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Added This Month</td>
-            <td align="right" style="font-size:11px;font-weight:700;color:#2C6B2F;padding:5px 0;"><!-- BOT:ADDED_THIS_MONTH -->+1 &nbsp;Christian Moore Casso<!-- /BOT:ADDED_THIS_MONTH --></td>
+            <td align="right" style="font-size:11px;font-weight:700;color:#2C6B2F;padding:5px 0;"><!-- BOT:ADDED_THIS_MONTH -->+3 &nbsp;Moore Casso, Hernandez, Goncalves<!-- /BOT:ADDED_THIS_MONTH --></td>
           </tr>
           <tr style="border-bottom:1px solid #EAE0CC;">
             <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Removed This Month</td>
@@ -312,7 +322,7 @@ body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
           </tr>
           <tr>
             <td style="font-size:9px;color:#9A7D5A;padding:5px 0;">Net Movement</td>
-            <td align="right" style="font-size:11px;font-weight:700;color:#8B1A1A;padding:5px 0;"><!-- BOT:NET_MOVEMENT -->-1<!-- /BOT:NET_MOVEMENT --></td>
+            <td align="right" style="font-size:11px;font-weight:700;color:#8B1A1A;padding:5px 0;"><!-- BOT:NET_MOVEMENT -->+1<!-- /BOT:NET_MOVEMENT --></td>
           </tr>
         </table>
       </td>
@@ -328,8 +338,8 @@ body { background: #F0E8D8; font-family: Arial, sans-serif; padding: 20px; }
 </div>
 <script>
 const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct'];
-const coData = /* BOT:CHART_CO_DATA */[26621, 24430, 25133, 66019, 55031, 37234, 59866, 55101, 71170, 14609]/* /BOT:CHART_CO_DATA */;
-const unitsData = /* BOT:CHART_UNITS_DATA */[34, 52, 48, 44, 79, 54, 65, 60, 69, 21]/* /BOT:CHART_UNITS_DATA */;
+const coData = /* BOT:CHART_CO_DATA */[26621, 24430, 25133, 66019, 55031, 37234, 59866, 55101, 71170, 1710]/* /BOT:CHART_CO_DATA */;
+const unitsData = /* BOT:CHART_UNITS_DATA */[34, 52, 48, 44, 79, 54, 65, 60, 69, 5]/* /BOT:CHART_UNITS_DATA */;
 new Chart(document.getElementById('coChart'), {
   type: 'bar',
   data: { labels: months, datasets: [{ data: coData, backgroundColor: coData.map((v,i) => i===7?'#C8A87A':'#2C1810'), borderRadius: 4 }] },
