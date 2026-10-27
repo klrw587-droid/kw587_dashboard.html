@@ -1,0 +1,250 @@
+{
+  "period": "October 2026 · Week 4 (10/21–10/27)",
+  "months": [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct"
+  ],
+  "marketCenters": [
+    {
+      "id": "weston",
+      "name": "Weston",
+      "code": null,
+      "address": null,
+      "updated": null,
+      "income": {
+        "collectedCo": null,
+        "collectedBtf": null,
+        "collectedOtherOi": null,
+        "projectedCo": null,
+        "projectedBtf": null
+      },
+      "production": {
+        "nextMo": null,
+        "listings": {
+          "units": null,
+          "vol": null
+        },
+        "written": {
+          "units": null,
+          "vol": null
+        },
+        "closed": {
+          "units": null,
+          "vol": null
+        }
+      },
+      "growth": {
+        "grossR1": null,
+        "grossR2": null,
+        "recruitedNames": null,
+        "offboarded": null,
+        "offboardedNames": null,
+        "net": null,
+        "count": null,
+        "countDate": null
+      },
+      "recruiting": {
+        "r1Appts": null,
+        "r1Gross": null,
+        "r2Appts": null,
+        "r2Gross": null,
+        "added": null,
+        "addedNames": null,
+        "removed": null
+      },
+      "p411": {
+        "p1": {
+          "agentsGoal": null,
+          "coGoal": null,
+          "agents": null,
+          "co": null
+        },
+        "p2": {
+          "agentsGoal": null,
+          "coGoal": null,
+          "agents": null,
+          "co": null
+        },
+        "p3": {
+          "text": null,
+          "unplugged": null
+        }
+      },
+      "trends": {
+        "co": null,
+        "units": null
+      }
+    },
+    {
+      "id": "pines",
+      "name": "Pembroke Pines",
+      "code": "MC587",
+      "address": "880 SW 145th Ave Suite 102 · Pembroke Pines, FL 33027 · 954.237.0400",
+      "updated": "Oct 26, 2026 · 2:36 PM",
+      "income": {
+        "collectedCo": 32248.18,
+        "collectedBtf": 3600,
+        "collectedOtherOi": 7015,
+        "projectedCo": 21317.4,
+        "projectedBtf": 1500
+      },
+      "production": {
+        "nextMo": 8387.36,
+        "listings": {
+          "units": 30,
+          "vol": 17840199
+        },
+        "written": {
+          "units": 46,
+          "vol": 12064187
+        },
+        "closed": {
+          "units": 42,
+          "vol": 14107788
+        }
+      },
+      "growth": {
+        "grossR1": 6,
+        "grossR2": 0,
+        "recruitedNames": "Christian Moore Casso, Ruby Hernandez, Gorette Goncalves, Kevin Tenney, Bethany Tenney, Steven Nogradi",
+        "offboarded": 2,
+        "offboardedNames": "Lucenda Roper, Yvesnola Joseph",
+        "net": 4,
+        "count": 171,
+        "countDate": "As of Oct 26"
+      },
+      "recruiting": {
+        "r1Appts": 12,
+        "r1Gross": 6,
+        "r2Appts": 1,
+        "r2Gross": 0,
+        "added": 6,
+        "addedNames": "Moore Casso, Hernandez, Goncalves, K. Tenney, B. Tenney, Nogradi",
+        "removed": 2
+      },
+      "p411": {
+        "p1": {
+          "agentsGoal": 103,
+          "coGoal": 364120,
+          "agents": 48,
+          "co": 89000
+        },
+        "p2": {
+          "agentsGoal": 63,
+          "coGoal": 81092,
+          "agents": 53,
+          "co": 126077
+        },
+        "p3": {
+          "text": "Tell our story through social media via agent interviews, classes & videography",
+          "unplugged": 18,
+          "viewership": 370
+        }
+      },
+      "trends": {
+        "co": [
+          26621,
+          24430,
+          25133,
+          66019,
+          55031,
+          37234,
+          59866,
+          55101,
+          71170,
+          32248
+        ],
+        "units": [
+          34,
+          52,
+          48,
+          44,
+          79,
+          54,
+          65,
+          60,
+          69,
+          42
+        ]
+      }
+    },
+    {
+      "id": "miami-beach",
+      "name": "Miami Beach",
+      "code": null,
+      "address": null,
+      "updated": null,
+      "income": {
+        "collectedCo": null,
+        "collectedBtf": null,
+        "collectedOtherOi": null,
+        "projectedCo": null,
+        "projectedBtf": null
+      },
+      "production": {
+        "nextMo": null,
+        "listings": {
+          "units": null,
+          "vol": null
+        },
+        "written": {
+          "units": null,
+          "vol": null
+        },
+        "closed": {
+          "units": null,
+          "vol": null
+        }
+      },
+      "growth": {
+        "grossR1": null,
+        "grossR2": null,
+        "recruitedNames": null,
+        "offboarded": null,
+        "offboardedNames": null,
+        "net": null,
+        "count": null,
+        "countDate": null
+      },
+      "recruiting": {
+        "r1Appts": null,
+        "r1Gross": null,
+        "r2Appts": null,
+        "r2Gross": null,
+        "added": null,
+        "addedNames": null,
+        "removed": null
+      },
+      "p411": {
+        "p1": {
+          "agentsGoal": null,
+          "coGoal": null,
+          "agents": null,
+          "co": null
+        },
+        "p2": {
+          "agentsGoal": null,
+          "coGoal": null,
+          "agents": null,
+          "co": null
+        },
+        "p3": {
+          "text": null,
+          "unplugged": null
+        }
+      },
+      "trends": {
+        "co": null,
+        "units": null
+      }
+    }
+  ]
+}

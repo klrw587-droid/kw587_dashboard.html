@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Level 5 Leadership Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #EEECE7; --panel: #FAF9F6; --ink: #1F2A24; --muted: #7C7A72; --label: #3E4A43;
+  --line: #E2DFD8; --gold: #B8963E; --gold-deep: #8C7232; --red: #9B2C2C; --green: #1F5C3A;
+  --head-bg: #1C3A2B; --head-ink: #F4F1EA; --head-sub: #C9A84C; --head-muted: #93A89B;
+  --tab-bg: #FAF9F6; --empty: #B5B2A9; --accent: #1C3A2B;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121614; --panel: #1B211E; --ink: #EEEBE3; --muted: #A39F94; --label: #C9C4B8;
+    --line: #2C3430; --gold: #C9A84C; --gold-deep: #B0924A; --red: #E08A7F; --green: #7FBF98;
+    --head-bg: #10261B; --head-ink: #F4F1EA; --head-sub: #C9A84C; --head-muted: #7F9688;
+    --tab-bg: #1B211E; --empty: #5D5A53; --accent: #5E9C7A;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121614; --panel: #1B211E; --ink: #EEEBE3; --muted: #A39F94; --label: #C9C4B8;
+  --line: #2C3430; --gold: #C9A84C; --gold-deep: #B0924A; --red: #E08A7F; --green: #7FBF98;
+  --head-bg: #10261B; --head-ink: #F4F1EA; --head-sub: #C9A84C; --head-muted: #7F9688;
+  --tab-bg: #1B211E; --empty: #5D5A53; --accent: #5E9C7A;
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--ink); font-family: Poppins, Arial, Helvetica, sans-serif; padding: 20px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.dashboard { max-width: 1100px; margin: 0 auto; }
+.serif { font-family: "Playfair Display", Georgia, "Times New Roman", serif; }
+
+/* HEADER */
+.header { background: var(--head-bg); border-radius: 10px 10px 0 0; padding: 20px 28px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+.eyebrow { font-size: 9px; color: var(--head-muted); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 4px; }
+.title { font-size: 24px; color: var(--head-ink); font-weight: 700; letter-spacing: 0.02em; }
+.subtitle { font-size: 12px; color: var(--head-sub); margin-top: 3px; }
+.header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.badge { background: #C9A84C; color: #1C3A2B; font-size: 10px; font-weight: 700; padding: 4px 12px; border-radius: 4px; letter-spacing: 0.1em; }
+.last-updated { font-size: 9px; color: var(--head-muted); }
+
+/* TABS */
+.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--tab-bg); border-bottom: 2px solid var(--gold); display: flex; overflow-x: auto; }
+.tab { flex: 1 0 auto; background: none; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; padding: 12px 18px; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); cursor: pointer; white-space: nowrap; }
+.tab .num { color: var(--gold-deep); margin-right: 6px; font-weight: 600; }
+.tab:hover { color: var(--ink); }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+.tab:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+
+/* ALERTS / NOTES */
+.alert-bar { background: #8E2B2B; color: #F4F1EA; font-size: 9px; font-weight: 700; padding: 7px 20px; letter-spacing: 0.05em; }
+.note-bar { background: var(--panel); color: var(--muted); font-size: 10px; padding: 9px 20px; border-bottom: 1px solid var(--line); font-style: italic; }
+
+/* SECTION HEADERS */
+.section-header { background: var(--bg); border-bottom: 2px solid var(--gold); padding: 7px 20px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.section-header span { font-size: 9px; font-weight: 700; color: var(--label); letter-spacing: 0.15em; text-transform: uppercase; }
+.section-header .tag { font-weight: 500; color: var(--muted); letter-spacing: 0.08em; }
+
+/* GRIDS */
+.grid { background: var(--panel); display: grid; }
+.g2 { grid-template-columns: repeat(2, 1fr); }
+.g3 { grid-template-columns: repeat(3, 1fr); }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 14px 16px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-width: 0; }
+.grid > .cell:last-child { border-right: none; }
+.kpi-label { font-size: 8px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; margin-bottom: 5px; }
+.kpi-value { font-size: 19px; color: var(--ink); font-weight: 700; font-family: "Playfair Display", Georgia, serif; }
+.kpi-value.red { color: var(--red); } .kpi-value.green { color: var(--green); }
+.kpi-value.empty, .sub-value.empty { color: var(--empty); }
+.kpi-sub { font-size: 9px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+.sub-label { font-size: 8px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-top: 6px; margin-bottom: 2px; }
+.sub-value { font-size: 14px; color: var(--ink); font-weight: 700; }
+
+/* GRAND TOTAL */
+.grand-total { background: #C9A84C; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.grand-total .label { font-size: 10px; font-weight: 700; color: #1C3A2B; letter-spacing: 0.1em; text-transform: uppercase; }
+.grand-total .value { font-size: 24px; font-weight: 700; color: #10261B; font-family: "Playfair Display", Georgia, serif; }
+
+/* CHARTS */
+.chart-box { padding: 16px; }
+.chart-title { font-size: 9px; color: var(--label); font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 12px; }
+.chart-wrap { position: relative; height: 170px; }
+.chart-empty { height: 170px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--empty); border: 1px dashed var(--line); border-radius: 6px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* 411 */
+.pill { display: inline-block; background: #1C3A2B; color: #C9A84C; font-size: 8px; font-weight: 700; padding: 2px 8px; border-radius: 3px; letter-spacing: 0.1em; }
+.goal { margin: 6px 0 10px; font-size: 11px; color: var(--muted); }
+.goal strong { color: var(--ink); }
+.row { display: flex; justify-content: space-between; gap: 10px; font-size: 10px; color: var(--muted); margin-bottom: 5px; }
+.row b { color: var(--ink); white-space: nowrap; } .row b.red { color: var(--red); }
+.bar { background: var(--line); height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 12px; }
+.bar > i { display: block; height: 100%; background: var(--gold); border-radius: 3px; }
+.bar > i.red { background: #9B2C2C; }
+.p1-split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+
+/* LIST TABLE (recruiting) */
+.mini { width: 100%; border-collapse: collapse; }
+.mini td { font-size: 9px; color: var(--muted); padding: 6px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.mini tr:last-child td { border-bottom: none; }
+.mini td.v { text-align: right; font-size: 11px; font-weight: 700; color: var(--ink); }
+.mini td.v.green { color: var(--green); } .mini td.v.red { color: var(--red); } .mini td.v.empty { color: var(--empty); }
+.mini .names { display: block; font-size: 9px; font-weight: 500; color: var(--muted); margin-top: 2px; }
+
+/* OVERVIEW CARDS */
+.mc-cards { background: var(--panel); display: grid; grid-template-columns: repeat(3, 1fr); }
+.mc-card { border-right: 1px solid var(--line); min-width: 0; display: flex; flex-direction: column; }
+.mc-card:last-child { border-right: none; }
+.mc-head { padding: 16px 16px 12px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.mc-num { font-size: 9px; color: var(--gold-deep); font-weight: 600; letter-spacing: 0.15em; }
+.mc-name { font-size: 18px; font-weight: 700; color: var(--ink); margin-top: 2px; }
+.mc-code { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; color: var(--muted); border: 1px solid var(--line); border-radius: 3px; padding: 2px 6px; white-space: nowrap; }
+.mc-block { padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.mc-block h4 { font-size: 8px; font-weight: 700; color: var(--label); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 1px solid var(--gold); display: inline-block; }
+.mc-hero { font-size: 22px; font-weight: 700; color: var(--ink); font-family: "Playfair Display", Georgia, serif; }
+.mc-hero.empty { color: var(--empty); }
+.mc-foot { padding: 12px 16px; margin-top: auto; }
+.link-btn { background: none; border: none; font-family: inherit; font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); cursor: pointer; border-bottom: 1px solid var(--gold); padding: 0 0 2px; }
+.status { font-size: 9px; color: var(--muted); }
+.status.live { color: var(--green); font-weight: 700; }
+
+/* FOOTER */
+.footer { background: var(--head-bg); padding: 12px 20px; border-radius: 0 0 10px 10px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.footer-left { font-size: 8px; color: var(--head-muted); font-style: italic; max-width: 560px; line-height: 1.5; }
+.footer-right { font-size: 8px; color: var(--head-sub); }
+
+[hidden] { display: none !important; }
+
+@media (max-width: 820px) {
+  .g4 { grid-template-columns: repeat(2, 1fr); }
+  .mc-cards { grid-template-columns: 1fr; }
+  .mc-card { border-right: none; border-bottom: 2px solid var(--gold); }
+  .mc-card:last-child { border-bottom: none; }
+}
+@media (max-width: 560px) {
+  body { padding: 10px; }
+  .g2, .g3, .g4, .p1-split { grid-template-columns: 1fr; gap: 0; }
+  .cell { border-right: none; }
+  .header { padding: 16px 18px; }
+  .header-right { align-items: flex-start; }
+}
+@media print {
+  .tabs { position: static; }
+  body::before { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="dashboard">
+
+  <div class="header">
+    <div>
+      <div class="eyebrow">Keller Williams · Level 5 Leadership</div>
+      <div class="title serif">Level 5 Leadership Dashboard</div>
+      <div class="subtitle" id="hdr-subtitle"></div>
+    </div>
+    <div class="header-right">
+      <div class="badge" id="hdr-badge">L5L</div>
+      <div class="last-updated" id="hdr-updated"></div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="Market centers" id="tabs"></nav>
+
+  <main id="view"></main>
+
+  <div class="footer">
+    <div class="footer-left">To ignite a high-energy real estate revolution by fostering a welcoming community for agents; where a culture of productivity creates lives worth living.</div>
+    <div class="footer-right" id="ftr-right"></div>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   DATA — one record per market center. Update values here.
+   null = not yet reported (shows as “—”).
+   ============================================================ */
+let PERIOD = 'October 2026 · Week 4 (10/21–10/27)';
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct'];
+
+function emptyMC(id, name, code) {
+  return {
+    id, name, code, address: null, updated: null,
+    income: { collectedCo: null, collectedBtf: null, collectedOtherOi: null, projectedCo: null, projectedBtf: null },
+    production: { nextMo: null, listings: { units: null, vol: null }, written: { units: null, vol: null }, closed: { units: null, vol: null } },
+    growth: { grossR1: null, grossR2: null, recruitedNames: null, offboarded: null, offboardedNames: null, net: null, count: null, countDate: null },
+    recruiting: { r1Appts: null, r1Gross: null, r2Appts: null, r2Gross: null, added: null, addedNames: null, removed: null },
+    p411: { p1: { agentsGoal: null, coGoal: null, agents: null, co: null }, p2: { agentsGoal: null, coGoal: null, agents: null, co: null }, p3: { text: null, unplugged: null } },
+    trends: { co: null, units: null }
+  };
+}
+
+let MCS = [
+  emptyMC('weston', 'Weston', null),
+  {
+    id: 'pines', name: 'Pembroke Pines', code: 'MC587',
+    address: '880 SW 145th Ave Suite 102 · Pembroke Pines, FL 33027 · 954.237.0400',
+    updated: 'Oct 26, 2026 · 2:36 PM',
+    income: { collectedCo: 32248.18, collectedBtf: 3600.00, collectedOtherOi: 7015.00, projectedCo: 21317.40, projectedBtf: 1500.00 },
+    production: {
+      nextMo: 8387.36,
+      listings: { units: 30, vol: 17840199 },
+      written:  { units: 46, vol: 12064187 },
+      closed:   { units: 42, vol: 14107788 }
+    },
+    growth: {
+      grossR1: 6, grossR2: 0, recruitedNames: 'Christian Moore Casso, Ruby Hernandez, Gorette Goncalves, Kevin Tenney, Bethany Tenney, Steven Nogradi',
+      offboarded: 2, offboardedNames: 'Lucenda Roper, Yvesnola Joseph',
+      net: 4, count: 171, countDate: 'As of Oct 26'
+    },
+    recruiting: { r1Appts: 12, r1Gross: 6, r2Appts: 1, r2Gross: 0, added: 6, addedNames: 'Moore Casso, Hernandez, Goncalves, K. Tenney, B. Tenney, Nogradi', removed: 2 },
+    p411: {
+      p1: { agentsGoal: 103, coGoal: 364120, agents: 48, co: 89000 },
+      p2: { agentsGoal: 63, coGoal: 81092, agents: 53, co: 126077 },
+      p3: { text: 'Tell our story through social media via agent interviews, classes & videography', unplugged: 18, viewership: 370 }
+    },
+    trends: {
+      co:    [26621, 24430, 25133, 66019, 55031, 37234, 59866, 55101, 71170, 32248],
+      units: [34, 52, 48, 44, 79, 54, 65, 60, 69, 42]
+    }
+  },
+  emptyMC('miami-beach', 'Miami Beach', null)
+];
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+const has = v => v !== null && v !== undefined;
+const DASH = '—';
+const money = (v, cents) => has(v) ? '$' + Number(v).toLocaleString('en-US', { minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0 }) : DASH;
+const num = v => has(v) ? Number(v).toLocaleString('en-US') : DASH;
+const signed = v => has(v) ? (v > 0 ? '+' + v : String(v)) : DASH;
+const pct = (a, b) => (has(a) && has(b) && b) ? Math.round(a / b * 100) : null;
+const cls = v => has(v) ? '' : ' empty';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function grandTotal(i) {
+  if (!has(i.collectedCo)) return null;
+  return [i.collectedCo, i.collectedBtf, i.collectedOtherOi, i.projectedCo, i.projectedBtf].filter(has).reduce((a, b) => a + b, 0);
+}
+const reporting = mc => has(mc.income.collectedCo);
+
+/* ============================================================
+   OVERVIEW
+   ============================================================ */
+function renderOverview() {
+  const live = MCS.filter(reporting).length;
+  const cards = MCS.map((mc, idx) => {
+    const gt = grandTotal(mc.income), g = mc.growth, p = mc.production;
+    const gross = (has(g.grossR1) && has(g.grossR2)) ? g.grossR1 + g.grossR2 : null;
+    return `
+    <div class="mc-card">
+      <div class="mc-head">
+        <div>
+          <div class="mc-num">0${idx + 1}</div>
+          <div class="mc-name serif">${esc(mc.name)}</div>
+        </div>
+        ${mc.code ? `<span class="mc-code">${esc(mc.code)}</span>` : ''}
+      </div>
+      <div class="mc-block">
+        <h4>Income</h4>
+        <div class="kpi-label">Grand Total Projected Revenue</div>
+        <div class="mc-hero${cls(gt)}">${money(gt, true)}</div>
+        <table class="mini" style="margin-top:8px;">
+          <tr><td>Collected Co$</td><td class="v${cls(mc.income.collectedCo)}">${money(mc.income.collectedCo, true)}</td></tr>
+          <tr><td>Projected Co$</td><td class="v${cls(mc.income.projectedCo)}">${money(mc.income.projectedCo, true)}</td></tr>
+        </table>
+      </div>
+      <div class="mc-block">
+        <h4>Production</h4>
+        <table class="mini">
+          <tr><td>Closed</td><td class="v${cls(p.closed.units)}">${num(p.closed.units)}${has(p.closed.vol) ? ' · ' + money(p.closed.vol) : ''}</td></tr>
+          <tr><td>Written</td><td class="v${cls(p.written.units)}">${num(p.written.units)}${has(p.written.vol) ? ' · ' + money(p.written.vol) : ''}</td></tr>
+          <tr><td>Listings Taken</td><td class="v${cls(p.listings.units)}">${num(p.listings.units)}${has(p.listings.vol) ? ' · ' + money(p.listings.vol) : ''}</td></tr>
+        </table>
+      </div>
+      <div class="mc-block">
+        <h4>Growth</h4>
+        <table class="mini">
+          <tr><td>Gross Recruited</td><td class="v${cls(gross)}">${num(gross)}</td></tr>
+          <tr><td>Offboarded</td><td class="v${cls(g.offboarded)}">${num(g.offboarded)}</td></tr>
+          <tr><td>Total Net</td><td class="v${has(g.net) ? (g.net > 0 ? ' green' : g.net < 0 ? ' red' : '') : ' empty'}">${signed(g.net)}</td></tr>
+          <tr><td>Associate Count</td><td class="v${cls(g.count)}">${num(g.count)}</td></tr>
+        </table>
+      </div>
+      <div class="mc-foot" style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <span class="status${reporting(mc) ? ' live' : ''}">${reporting(mc) ? '● Reporting' : 'Awaiting data'}</span>
+        <button class="link-btn" data-go="${mc.id}">Open ${esc(mc.name)} →</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="note-bar">Snapshot of all three market centers for ${esc(PERIOD)}. ${live} of ${MCS.length} market centers reporting.</div>
+    <div class="section-header"><span>Market Center Snapshot</span><span class="tag">Income · Production · Growth</span></div>
+    <div class="mc-cards">${cards}</div>`;
+}
+
+/* ============================================================
+   MARKET CENTER DETAIL (Pines layout)
+   ============================================================ */
+function renderMC(mc) {
+  const i = mc.income, p = mc.production, g = mc.growth, r = mc.recruiting, q = mc.p411;
+  const gt = grandTotal(i);
+  const p1a = pct(q.p1.agents, q.p1.agentsGoal), p1c = pct(q.p1.co, q.p1.coGoal);
+  const p2a = pct(q.p2.agents, q.p2.agentsGoal), p2c = pct(q.p2.co, q.p2.coGoal);
+  const p2Exceeded = has(q.p2.co) && has(q.p2.coGoal) && q.p2.co > q.p2.coGoal;
+  const rNet = (has(r.added) && has(r.removed)) ? r.added - r.removed : null;
+  const noData = !reporting(mc);
+
+  const prodCell = (label, o) => `
+    <div class="cell">
+      <div class="kpi-label">${label}</div>
+      <div class="sub-label">Units</div><div class="sub-value${cls(o.units)}">${num(o.units)}</div>
+      <div class="sub-label">Sales Volume</div><div class="sub-value${cls(o.vol)}">${money(o.vol)}</div>
+    </div>`;
+
+  return `
+    ${p2Exceeded ? `<div class="alert-bar">⚠ &nbsp;P2 Alert: Co$ Offboarded YTD (${money(q.p2.co)}) has exceeded the annual goal of ${money(q.p2.coGoal)}</div>` : ''}
+    ${noData ? `<div class="note-bar">${esc(mc.name)} figures haven’t been loaded yet. This tab uses the same layout as Pembroke Pines and will fill in once its reports are added.</div>` : ''}
+
+    <div class="section-header"><span>Income</span></div>
+    <div class="grid g3">
+      <div class="cell"><div class="kpi-label">Collected Co$</div><div class="kpi-value${cls(i.collectedCo)}">${money(i.collectedCo, true)}</div><div class="kpi-sub">Income Statement · Current Actual</div></div>
+      <div class="cell"><div class="kpi-label">Collected BTF (Admin Fees)</div><div class="kpi-value${cls(i.collectedBtf)}">${money(i.collectedBtf, true)}</div><div class="kpi-sub">Acct 8-0040 · Current Actual</div></div>
+      <div class="cell"><div class="kpi-label">Collected Other OI</div><div class="kpi-value${cls(i.collectedOtherOi)}">${money(i.collectedOtherOi, true)}</div><div class="kpi-sub">Total OI minus BTF · Current Actual</div></div>
+    </div>
+    <div class="grid g2">
+      <div class="cell"><div class="kpi-label">Projected Co$</div><div class="kpi-value${cls(i.projectedCo)}">${money(i.projectedCo, true)}</div><div class="kpi-sub">Pending Co$ · Company Dollar col</div></div>
+      <div class="cell"><div class="kpi-label">Projected BTF</div><div class="kpi-value${cls(i.projectedBtf)}">${money(i.projectedBtf, true)}</div><div class="kpi-sub">BTF Spreadsheet · MTD${has(i.projectedBtf) ? '' : ' · not yet read'}</div></div>
+    </div>
+    <div class="grand-total"><span class="label">Grand Total Projected Revenue${(has(gt) && !has(i.projectedBtf)) ? ' · excl. Projected BTF' : ''}</span><span class="value">${money(gt, true)}</span></div>
+
+    <div class="section-header"><span>Production</span></div>
+    <div class="grid g4">
+      <div class="cell"><div class="kpi-label">Next Mo. Projected Income</div><div class="kpi-value${cls(p.nextMo)}" style="font-size:17px;">${money(p.nextMo, true)}</div><div class="kpi-sub">Next month pending Co$ report</div></div>
+      ${prodCell('Listings Taken', p.listings)}
+      ${prodCell('Contracts Written', p.written)}
+      ${prodCell('Closed Contracts', p.closed)}
+    </div>
+
+    <div class="section-header"><span>Growth</span></div>
+    <div class="grid g4">
+      <div class="cell"><div class="kpi-label">Gross R1 / R2</div><div class="kpi-value${cls(g.grossR1)}">${has(g.grossR1) ? g.grossR1 + ' / ' + num(g.grossR2) : DASH}</div>${g.recruitedNames ? `<div class="kpi-sub">${esc(g.recruitedNames)}</div>` : ''}</div>
+      <div class="cell"><div class="kpi-label">Agents Offboarded</div><div class="kpi-value${cls(g.offboarded)}">${num(g.offboarded)}</div>${g.offboardedNames ? `<div class="kpi-sub">${esc(g.offboardedNames)}</div>` : ''}</div>
+      <div class="cell"><div class="kpi-label">Total Net</div><div class="kpi-value${cls(g.net)}">${signed(g.net)}</div></div>
+      <div class="cell"><div class="kpi-label">MC Associate Count</div><div class="kpi-value${cls(g.count)}">${num(g.count)}</div>${g.countDate ? `<div class="kpi-sub">${esc(g.countDate)}</div>` : ''}</div>
+    </div>
+
+    <div class="section-header"><span>2026 YTD Trends</span></div>
+    <div class="grid g2">
+      <div class="cell chart-box"><div class="chart-title">Collected Co$ by Month ($)</div>${mc.trends.co ? `<div class="chart-wrap"><canvas id="co-${mc.id}"></canvas></div>` : `<div class="chart-empty">No trend data yet</div>`}</div>
+      <div class="cell chart-box"><div class="chart-title">Closed Units by Month</div>${mc.trends.units ? `<div class="chart-wrap"><canvas id="units-${mc.id}"></canvas></div>` : `<div class="chart-empty">No trend data yet</div>`}</div>
+    </div>
+
+    <div class="section-header"><span>411 Accountability</span></div>
+    <div class="grid" style="grid-template-columns:1fr;">
+      <div class="cell" style="border-right:none;">
+        <span class="pill">PRIORITY 1</span>
+        <p class="goal">Gross <strong>${has(q.p1.agentsGoal) ? q.p1.agentsGoal + ' agents' : DASH}</strong> with <strong>${money(q.p1.coGoal)}</strong> in Co$ recruited</p>
+        <div class="p1-split">
+          <div>
+            <div class="row"><span>Agents Recruited YTD</span><b>${has(q.p1.agents) ? `${q.p1.agents} of ${q.p1.agentsGoal} &nbsp;(${p1a}%)` : DASH}</b></div>
+            <div class="bar"><i style="width:${p1a || 0}%"></i></div>
+          </div>
+          <div>
+            <div class="row"><span>Co$ Recruited YTD</span><b>${has(q.p1.co) ? `${money(q.p1.co)} of ${money(q.p1.coGoal)} &nbsp;(${p1c}%)` : DASH}</b></div>
+            <div class="bar"><i style="width:${p1c || 0}%"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="grid g2">
+      <div class="cell">
+        <span class="pill">PRIORITY 2</span>
+        <p class="goal">Less than <strong>${has(q.p2.agentsGoal) ? q.p2.agentsGoal + ' agents' : DASH}</strong> with <strong>${money(q.p2.coGoal)}</strong> in Co$ leave</p>
+        <div class="row"><span>Agents Offboarded YTD</span><b class="red">${has(q.p2.agents) ? `${q.p2.agents} of ${q.p2.agentsGoal} &nbsp;(${p2a}%)` : DASH}</b></div>
+        <div class="bar"><i class="red" style="width:${Math.min(p2a || 0, 100)}%"></i></div>
+        <div class="row"><span>Co$ Offboarded YTD</span><b class="red">${has(q.p2.co) ? money(q.p2.co) + (p2Exceeded ? ' &nbsp;⚠ Exceeded' : ` &nbsp;(${p2c}%)`) : DASH}</b></div>
+        <div class="bar"><i class="red" style="width:${Math.min(p2c || 0, 100)}%"></i></div>
+      </div>
+      <div class="cell">
+        <span class="pill">PRIORITY 3</span>
+        <p class="goal">${q.p3.text ? `<strong>Tell our story</strong> through social media via agent interviews, classes &amp; videography` : DASH}</p>
+        <div class="row"><span>Episodes to Market YTD</span><b>${num(q.p3.unplugged)}</b></div>
+        <div class="row"><span>Viewership YTD</span><b>${num(q.p3.viewership)}</b></div>
+      </div>
+    </div>
+
+    <div class="section-header"><span>Recruiting Pipeline · Oct MTD</span></div>
+    <div class="grid g3">
+      <div class="cell">
+        <div class="kpi-label" style="margin-bottom:8px;">R0 / R1</div>
+        <table class="mini">
+          <tr><td>Appts Held MTD</td><td class="v${cls(r.r1Appts)}">${num(r.r1Appts)}</td></tr>
+          <tr><td>Gross MTD</td><td class="v${cls(r.r1Gross)}">${num(r.r1Gross)}</td></tr>
+        </table>
+      </div>
+      <div class="cell">
+        <div class="kpi-label" style="margin-bottom:8px;">R2</div>
+        <table class="mini">
+          <tr><td>Appts Held MTD</td><td class="v${cls(r.r2Appts)}">${num(r.r2Appts)}</td></tr>
+          <tr><td>Gross MTD</td><td class="v${cls(r.r2Gross)}">${num(r.r2Gross)}</td></tr>
+        </table>
+      </div>
+      <div class="cell">
+        <div class="kpi-label" style="margin-bottom:8px;">Additions &amp; Removals</div>
+        <table class="mini">
+          <tr><td>Added This Month</td><td class="v${has(r.added) ? ' green' : ' empty'}">${signed(r.added)}${r.addedNames ? `<span class="names">${esc(r.addedNames)}</span>` : ''}</td></tr>
+          <tr><td>Removed This Month</td><td class="v${cls(r.removed)}">${num(r.removed)}</td></tr>
+          <tr><td>Net Movement</td><td class="v${has(rNet) ? (rNet > 0 ? ' green' : rNet < 0 ? ' red' : '') : ' empty'}">${signed(rNet)}</td></tr>
+        </table>
+      </div>
+    </div>`;
+}
+
+/* ============================================================
+   CHARTS
+   ============================================================ */
+let charts = [];
+function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function drawCharts(mc) {
+  charts.forEach(c => c.destroy()); charts = [];
+  if (!window.Chart) return;
+  const ink = cssVar('--accent'), muted = cssVar('--muted'), line = cssVar('--line'), gold = cssVar('--gold');
+  const last = MONTHS.length - 1;
+  const axes = (fmt) => ({
+    y: { ticks: { callback: fmt || (v => v), color: muted, font: { size: 9 } }, grid: { color: line } },
+    x: { ticks: { color: muted, font: { size: 9 } }, grid: { display: false } }
+  });
+  const base = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } };
+  const coEl = document.getElementById('co-' + mc.id);
+  if (coEl) charts.push(new Chart(coEl, {
+    type: 'bar',
+    data: { labels: MONTHS, datasets: [{ data: mc.trends.co, backgroundColor: mc.trends.co.map((v, i) => i === last ? gold : ink), borderRadius: 4 }] },
+    options: { ...base, plugins: { ...base.plugins, tooltip: { callbacks: { label: c => money(c.raw) } } }, scales: axes(v => '$' + (v / 1000).toFixed(0) + 'k') }
+  }));
+  const uEl = document.getElementById('units-' + mc.id);
+  if (uEl) charts.push(new Chart(uEl, {
+    type: 'line',
+    data: { labels: MONTHS, datasets: [{ data: mc.trends.units, borderColor: ink, backgroundColor: 'rgba(201,168,76,0.15)', pointBackgroundColor: mc.trends.units.map((v, i) => i === last ? gold : ink), pointRadius: 5, fill: true, tension: 0.3 }] },
+    options: { ...base, scales: axes() }
+  }));
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+let TABS = [];
+const tabsEl = document.getElementById('tabs');
+function buildTabs() {
+  TABS = [{ id: 'overview', label: 'Overview' }, ...MCS.map(m => ({ id: m.id, label: m.name }))];
+  tabsEl.innerHTML = TABS.map((t, i) => `<button class="tab" role="tab" data-tab="${t.id}" aria-selected="false"><span class="num">0${i}</span>${esc(t.label)}</button>`).join('');
+}
+
+let current = null;
+function show(id) {
+  if (!TABS.some(t => t.id === id)) id = 'overview';
+  current = id;
+  tabsEl.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === id)));
+  const view = document.getElementById('view');
+  const mc = MCS.find(m => m.id === id);
+  if (mc) {
+    view.innerHTML = renderMC(mc);
+    document.getElementById('hdr-subtitle').textContent = mc.name + '  ·  ' + PERIOD;
+    document.getElementById('hdr-badge').textContent = mc.code || mc.name.toUpperCase();
+    document.getElementById('hdr-updated').textContent = mc.updated ? 'Last updated: ' + mc.updated : 'Awaiting first update';
+    document.getElementById('ftr-right').textContent = mc.address || 'Level 5 Leadership · South Florida';
+    drawCharts(mc);
+  } else {
+    view.innerHTML = renderOverview();
+    document.getElementById('hdr-subtitle').textContent = 'All Market Centers  ·  ' + PERIOD;
+    document.getElementById('hdr-badge').textContent = 'L5L';
+    const latest = MCS.filter(m => m.updated).map(m => m.updated)[0];
+    document.getElementById('hdr-updated').textContent = latest ? 'Last updated: ' + latest : '';
+    document.getElementById('ftr-right').textContent = 'Level 5 Leadership · Weston · Pembroke Pines · Miami Beach';
+    charts.forEach(c => c.destroy()); charts = [];
+  }
+  try { if (location.hash.slice(1) !== id) history.replaceState(null, '', '#' + id); } catch (e) {}
+}
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-tab], [data-go]');
+  if (!t) return;
+  show(t.dataset.tab || t.dataset.go);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+tabsEl.addEventListener('keydown', e => {
+  if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+  const i = TABS.findIndex(t => t.id === current);
+  const n = TABS[(i + (e.key === 'ArrowRight' ? 1 : TABS.length - 1)) % TABS.length].id;
+  show(n); tabsEl.querySelector(`[data-tab="${n}"]`).focus();
+});
+window.addEventListener('hashchange', () => show(location.hash.slice(1)));
+try {
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { const mc = MCS.find(m => m.id === current); if (mc) drawCharts(mc); });
+} catch (e) {}
+
+/* Load live numbers from l5l-data.json (same folder). Falls back to the
+   numbers built into this page if the file is missing or invalid. */
+function start() { buildTabs(); show(location.hash.slice(1) || 'overview'); }
+fetch('l5l-data.json?v=' + Date.now(), { cache: 'no-store' })
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(d => {
+    if (d && Array.isArray(d.marketCenters) && d.marketCenters.length) {
+      MCS = d.marketCenters.map(m => Object.assign(emptyMC(m.id, m.name, m.code || null), m));
+      if (d.months) MONTHS.splice(0, MONTHS.length, ...d.months);
+      if (d.period) PERIOD = d.period;
+    }
+  })
+  .catch(err => console.warn('Using built-in data:', err))
+  .finally(start);
+</script>
+</body>
+</html>
