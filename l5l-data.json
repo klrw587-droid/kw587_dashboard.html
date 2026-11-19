@@ -5,7 +5,7 @@
     {
       "id": "weston",
       "name": "Weston",
-      "code": null,
+      "code": "MC245",
       "address": null,
       "updated": null,
       "income": { "collectedCo": null, "collectedBtf": null, "collectedOtherOi": null, "projectedCo": null, "projectedBtf": null },
@@ -57,7 +57,7 @@
     {
       "id": "miami-beach",
       "name": "Miami Beach",
-      "code": null,
+      "code": "MC632",
       "address": null,
       "updated": null,
       "income": { "collectedCo": null, "collectedBtf": null, "collectedOtherOi": null, "projectedCo": null, "projectedBtf": null },
