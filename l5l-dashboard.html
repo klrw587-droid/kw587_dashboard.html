@@ -202,7 +202,7 @@ table.cmp { width: 100%; border-collapse: collapse; min-width: 680px; }
    DATA — built-in fallback. Live numbers load from l5l-data.json.
    null = not yet reported (shows as “—”).
    ============================================================ */
-let PERIOD = 'October 2026 · Week 4 (10/21–10/27)';
+let PERIOD = 'October 2026';
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct'];
 
 function emptyMC(id, name, code) {
@@ -346,7 +346,7 @@ function renderCombined() {
   return `
     <div class="note-bar">Company-wide totals for ${esc(PERIOD)}. Includes ${c.live.length} of ${MCS.length} market centers reporting (${esc(liveNames)}); centers without reports are added automatically once their numbers are loaded.</div>
 
-    <div class="section-header"><span>Income</span><span class="tag">All market centers</span></div>
+    <div class="section-header"><span>Income</span></div>
     <div class="grid g3">
       ${kpi('Collected Co$', i.collectedCo, 'm2', 'Income Statements · Current Actual')}
       ${kpi('Collected BTF (Admin Fees)', i.collectedBtf, 'm2', 'Acct 8-0040 · Current Actual')}
@@ -359,7 +359,7 @@ function renderCombined() {
     <div class="grand-total"><span class="label">L5L Grand Total Projected Revenue</span><span class="value">${money(gt, true)}</span></div>
     ${shareStrip}
 
-    <div class="section-header"><span>Production</span><span class="tag">All market centers</span></div>
+    <div class="section-header"><span>Production</span></div>
     <div class="grid g4">
       <div class="cell"><div class="kpi-label">Next Mo. Projected Income</div><div class="kpi-value${cls(p.nextMo)}" style="font-size:17px;">${money(p.nextMo, true)}</div><div class="kpi-sub">Next month pending Co$</div></div>
       ${prodCellT('Listings Taken', p.listings)}
@@ -367,12 +367,12 @@ function renderCombined() {
       ${prodCellT('Closed Contracts', p.closed)}
     </div>
 
-    <div class="section-header"><span>Growth</span><span class="tag">All market centers</span></div>
+    <div class="section-header"><span>Growth</span></div>
     <div class="grid g4">
       ${kpi('Gross Recruited', grossOf(c), 'n', 'R0/R1 + R2, month to date')}
       ${kpi('Agents Offboarded', g.offboarded, 'n', 'Month to date')}
       ${kpi('Total Net', g.net, 's', 'Month to date', has(g.net) ? (g.net > 0 ? ' green' : g.net < 0 ? ' red' : '') : '')}
-      ${kpi('L5L Associate Count', g.count, 'n', 'All market centers')}
+      ${kpi('L5L Associate Count', g.count, 'n', '')}
     </div>
 
     <div class="section-header"><span>Efficiency</span><span class="tag">Company-wide</span></div>
